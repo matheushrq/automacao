@@ -22,7 +22,7 @@ def acessa_site():
 
 # encontrando a caixa de busca
 def encontrar_caixa_busca():
-    query = "tempo agora contagem"
+    query = "mexico x africa do sul"
 
     try:
         search_box = driver.find_element(By.NAME, "q")
