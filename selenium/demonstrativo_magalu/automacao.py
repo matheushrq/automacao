@@ -27,21 +27,25 @@ class AutomacaoMagalu:
         time.sleep(5) # espera 5 segundos para a página carregar completamente
 
     def clica_link_planilha(self):
-        # sempre colocar o xpath entre aspas simples
-        xpath_pag_inicial = '//*[@id="collapseMobile-3"]/ul/li[2]/a'
-        xpath_link = '//*[@id="BvNjWeiZirwEyUUBFST0Iw=="]'
+        try:
+            # sempre colocar o xpath entre aspas simples
+            xpath_pag_inicial = '//*[@id="collapseMobile-3"]/ul/li[2]/a'
+            xpath_link = '//*[@id="BvNjWeiZirwEyUUBFST0Iw=="]'
 
-        link_pagina = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpath_pag_inicial))
-        )
-        self.driver.execute_script("arguments[0].click();", link_pagina) # clica no link usando JavaScript
-        time.sleep(5)
+            link_pagina = WebDriverWait(self.driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, xpath_pag_inicial))
+            )
+            self.driver.execute_script("arguments[0].click();", link_pagina) # clica no link usando JavaScript
+            time.sleep(5)
 
-        link_planilha = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpath_link))
-        )
-        self.driver.execute_script("arguments[0].click();", link_planilha) # clica no link usando JavaScript
-        time.sleep(5)
+            link_planilha = WebDriverWait(self.driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, xpath_link))
+            )
+            self.driver.execute_script("arguments[0].click();", link_planilha) # clica no link usando JavaScript
+            time.sleep(10)
+            print("Planilha baixada com sucesso!")
+        except Exception as e:
+            print(f"Erro ao clicar no link da planilha: {e}")
 
     def fecha_navegador(self):
         self.driver.quit()
