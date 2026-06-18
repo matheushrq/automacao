@@ -27,7 +27,7 @@ class AutomacaoMagalu:
         time.sleep(5) # espera 5 segundos para a página carregar completamente
 
     def clica_link_planilha(self):
-        # sempre coloca o xpath entre aspas simples
+        # sempre colocar o xpath entre aspas simples
         xpath_pag_inicial = '//*[@id="collapseMobile-3"]/ul/li[2]/a'
         xpath_link = '//*[@id="BvNjWeiZirwEyUUBFST0Iw=="]'
 
