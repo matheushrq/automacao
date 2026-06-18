@@ -41,7 +41,7 @@ class AutomacaoMagalu:
             link_planilha = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, xpath_link))
             )
-            self.driver.execute_script("arguments[0].click();", link_planilha) # clica no link usando JavaScript
+            self.driver.execute_script("arguments[0].click();", link_planilha)
             time.sleep(10)
             print("Planilha baixada com sucesso!")
         except Exception as e:
