@@ -4,43 +4,41 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # iniciando o driver
 def iniciar_driver():
     options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
+    driver.maximize_window()
     return driver
 
 driver = iniciar_driver()
 
-# acessando o google
 def acessa_site():
-    url = "https://www.google.com"
+    url = "https://www.youtube.com"
     driver.get(url)
 
-# encontrando a caixa de busca
 def encontrar_caixa_busca():
-    query = "mexico x africa do sul"
+    pesquisar = os.getenv("BOTAO_PESQUISAR")
+    search_box = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "search_query"))
+    )
+    search_box.send_keys("how to use selenium with python")
 
-    try:
-        search_box = driver.find_element(By.NAME, "q")
-        search_box.send_keys(query)
-        search_box.submit()
-    except Exception as e:
-        print("Não encontrado")
+    realiza_pesquisa = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, pesquisar))
+    )
+    driver.execute_script("arguments[0].click();", realiza_pesquisa)
 
-# limpando a consulta realizada
-def limpar_consulta():
-    try:
-        search_box = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.NAME, "q"))
-        )
-        search_box.clear()
-    except Exception as e:
-        print("Não encontrado")
-
-# fechando o navegador
 def fechar_navegador():
     driver.quit()
+
+if __name__ == "__main__":
+    acessa_site()
+    encontrar_caixa_busca()
+    # fechar_navegador()
