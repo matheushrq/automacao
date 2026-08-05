@@ -78,9 +78,3 @@ def baixa_relatorio():
 
 def fecha_navegador():
     driver.quit()
-
-if __name__ == "__main__":
-    acessa_site()
-    acessa_relatorio()
-    baixa_relatorio()
-    fecha_navegador()
