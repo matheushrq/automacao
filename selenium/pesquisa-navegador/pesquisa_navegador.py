@@ -19,29 +19,37 @@ def iniciar_driver():
     driver.maximize_window()
     return driver
 
+
 driver = iniciar_driver()
 
 def acessa_site():
     url = os.getenv('URL')
+    if not url:
+        raise ValueError("A variável de ambiente 'URL' não foi encontrada.")
     driver.get(url)
 
-def acessa_relatorio():
-    xpath_relatorios = os.getenv('xpath_relatorios')
-    relatorio = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, xpath_relatorios))
+def _clica_elemento_por_xpath(chave_xpath, timeout=15, espera_pos_click=2):
+    xpath = os.getenv(chave_xpath)
+    if not xpath:
+        raise ValueError(f"A variável de ambiente '{chave_xpath}' não foi encontrada.")
+
+    elemento = WebDriverWait(driver, timeout).until(
+        EC.element_to_be_clickable((By.XPATH, xpath))
     )
-    driver.execute_script("arguments[0].click();", relatorio)
-    time.sleep(3)  # Aguarda 3 segundos para garantir que a página carregue
+    driver.execute_script("arguments[0].click();", elemento)
+    time.sleep(espera_pos_click)
+
+def executa_etapas_xpath(chaves_xpath):
+    for chave in chaves_xpath:
+        _clica_elemento_por_xpath(chave)
+
+def acessa_relatorio():
+    executa_etapas_xpath(['xpath_relatorios'])
 
 def baixa_relatorio():
-    xpath_download = os.getenv('xpath_download')
-    download = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, xpath_download))
-    )
-    driver.execute_script("arguments[0].click();", download)
-    time.sleep(3)  # Aguarda 3 segundos para garantir que o download seja iniciado
+    executa_etapas_xpath(['xpath_download'])
 
-    # cria diretório se não existir para salvar relatório baixado
+    # Cria diretório se não existir para salvar relatório baixado.
     projeto = os.getcwd()
     relatorio = os.path.join(projeto, 'relatorio')
     if not os.path.exists(relatorio):
