@@ -47,34 +47,10 @@ def baixa_relatorio():
     if not os.path.exists(relatorio):
         os.makedirs(relatorio, exist_ok=True)
 
-    nome_arquivo = None
-    for atributo in ('download', 'href'):
-        valor = download.get_attribute(atributo)
-        if valor:
-            nome_arquivo = os.path.basename(valor.split('?')[0].split('#')[0])
-            if nome_arquivo and '.' in nome_arquivo:
-                break
-            nome_arquivo = None
-
-    if not nome_arquivo:
-        arquivos = [
-            f for f in os.listdir(projeto)
-            if os.path.isfile(os.path.join(projeto, f)) and not f.endswith('.crdownload')
-        ]
-        if not arquivos:
-            raise FileNotFoundError('Nenhum arquivo foi baixado.')
-        nome_arquivo = max(arquivos, key=lambda f: os.path.getmtime(os.path.join(projeto, f)))
-
-    origem = os.path.join(projeto, nome_arquivo)
-    destino = os.path.join(relatorio, nome_arquivo)
-
-    if os.path.exists(destino):
-        os.remove(destino)
-
-    if os.path.exists(origem):
-        shutil.move(origem, destino)
-    else:
-        raise FileNotFoundError(f'Arquivo não encontrado para mover: {origem}')
+    try:
+        shutil.move(os.path.join(projeto, 'Relatorio_Mensal - HGLG11.xlsx'), relatorio)
+    except Exception as e:
+        print(f"Erro ao mover o arquivo: {e}")
 
 def fecha_navegador():
     driver.quit()
