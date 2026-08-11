@@ -49,6 +49,9 @@ def acessa_relatorio():
 def baixa_relatorio():
     executa_etapas_xpath(['xpath_download'])
 
+def baixa_pdf():
+    executa_etapas_xpath(['xpath_pdf'])
+
     # Cria diretório se não existir para salvar relatório baixado.
     projeto = os.getcwd()
     relatorio = os.path.join(projeto, 'relatorio')
